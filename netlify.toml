@@ -1,6 +1,6 @@
 [[redirects]]
   from = "/api/*"
-  to = "https://YOUR_RENDER_BACKEND_URL/api/:splat"
+  to = "https://task-manager-tbek.onrender.com/api/:splat"
   status = 200
   force = true
 
