@@ -1,0 +1,6 @@
+{
+  "name": "Productivity Task Manager",
+  "description": "A premium offline-first productivity dashboard and task manager featuring offline synchronization, interactive calendar, statistics, habits, Pomodoro timer, and markdown notes.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
