@@ -113,7 +113,7 @@ export default function AuthScreen({ onAuthSuccess, showToast }: AuthScreenProps
             transition={{ duration: 0.8, delay: 0.1 }}
             className="text-4xl font-extrabold text-white tracking-wider font-sans mb-2"
           >
-            SERENE
+            TASKHUB
           </motion.h1>
           
           <motion.p

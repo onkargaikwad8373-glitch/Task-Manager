@@ -139,7 +139,7 @@ export default function App() {
     const triggerPush = (task: Task) => {
       try {
         if (typeof Notification !== 'undefined' && Notification.permission === 'granted') {
-          new Notification(`Serene: "${task.title}" is Due!`, {
+          new Notification(`TaskHub: "${task.title}" is Due!`, {
             body: `Priority: ${task.priority}\n${task.description || 'Action required now.'}`,
             tag: task.id
           });
@@ -349,7 +349,7 @@ export default function App() {
 
     setCurrentUser(null);
     setAuthToken(null);
-    showToast('Signed out of Serene workspace.', 'info');
+    showToast('Signed out of TaskHub workspace.', 'info');
     reloadDataFromStorage();
   };
 
@@ -547,7 +547,7 @@ export default function App() {
             >
               <Menu className="h-5 w-5" />
             </button>
-            <span className="font-semibold text-sm tracking-tight text-white leading-tight">Serene</span>
+            <span className="font-semibold text-sm tracking-tight text-white leading-tight">TaskHub</span>
           </div>
           
           {currentUser && (

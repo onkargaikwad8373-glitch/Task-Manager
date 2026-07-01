@@ -1,6 +1,6 @@
 {
-  "name": "Serene Tasks",
-  "short_name": "Serene",
+  "name": "TaskHub Tasks",
+  "short_name": "TaskHub",
   "description": "Sleek, Offline-First Task Manager & Productivity Board.",
   "start_url": "/",
   "display": "standalone",

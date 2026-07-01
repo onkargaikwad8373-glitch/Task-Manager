@@ -46,7 +46,7 @@ export default function Sidebar({
             <Zap className="h-5 w-5 fill-current" />
           </div>
           <div>
-            <h1 className="font-semibold text-sm tracking-tight text-white leading-tight">Serene</h1>
+            <h1 className="font-semibold text-sm tracking-tight text-white leading-tight">TaskHub</h1>
             <span className="text-[10px] text-slate-400 font-mono tracking-wider">PRODUCTIVITY</span>
           </div>
         </div>

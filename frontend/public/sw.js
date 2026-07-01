@@ -1,4 +1,4 @@
-const CACHE_NAME = 'serene-tasks-cache-v1';
+const CACHE_NAME = 'taskhub-cache-v1';
 const ASSETS = [
   '/',
   '/index.html',
