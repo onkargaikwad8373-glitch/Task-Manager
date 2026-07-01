@@ -681,7 +681,35 @@ class LocalDb {
   public applyServerPull(remoteTasks: Task[], remoteHabits: Habit[], remoteSessions: PomodoroSession[], remoteSettings?: AppSettings): void {
     const localTasks = this.getTasks();
     const localHabits = this.getHabits();
-    
+    const localSessions = this.getPomodoroSessions();
+    const syncQueue = this.getSyncQueue();
+
+    // Check which local items need to be pushed to the server
+    const remoteTaskIds = new Set(remoteTasks.map(rt => rt.id));
+    const remoteHabitIds = new Set(remoteHabits.map(rh => rh.id));
+    const remoteSessionIds = new Set(remoteSessions.map(rs => rs.id));
+
+    // Get current IDs in sync queue to avoid duplicate queueing
+    const queuedIds = new Set(syncQueue.map(q => q.payload.id));
+
+    localTasks.forEach(lt => {
+      if (!remoteTaskIds.has(lt.id) && !queuedIds.has(lt.id)) {
+        this.addToSyncQueue('tasks', 'INSERT', lt);
+      }
+    });
+
+    localHabits.forEach(lh => {
+      if (!remoteHabitIds.has(lh.id) && !queuedIds.has(lh.id)) {
+        this.addToSyncQueue('habits', 'INSERT', lh);
+      }
+    });
+
+    localSessions.forEach(ls => {
+      if (!remoteSessionIds.has(ls.id) && !queuedIds.has(ls.id)) {
+        this.addToSyncQueue('pomodoro', 'INSERT', ls);
+      }
+    });
+
     // Merge tasks (Last-Write-Wins based on updatedAt)
     const taskMap = new Map<string, Task>();
     localTasks.forEach(t => taskMap.set(t.id, t));
@@ -705,7 +733,6 @@ class LocalDb {
     this.set(STORAGE_KEYS.HABITS, Array.from(habitMap.values()));
 
     // Merge sessions
-    const localSessions = this.getPomodoroSessions();
     const sessionMap = new Map<string, PomodoroSession>();
     localSessions.forEach(s => sessionMap.set(s.id, s));
     remoteSessions.forEach(rs => sessionMap.set(rs.id, rs));
@@ -713,11 +740,10 @@ class LocalDb {
 
     if (remoteSettings) {
       const currentSettings = this.getSettings();
-      // Only overwrite if changed
       this.set(STORAGE_KEYS.SETTINGS, { ...currentSettings, ...remoteSettings });
     }
 
-    this.addAuditLog('DATABASE_PULL', `Pulled updates from server. Synchronized structures.`);
+    this.addAuditLog('DATABASE_PULL', `Pulled updates from server. Merged unsynced local changes.`);
   }
 
   // --- EXPORT & IMPORT ---
