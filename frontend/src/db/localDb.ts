@@ -128,7 +128,12 @@ class LocalDb {
 
   // --- TASKS CRUD ---
   public getTasks(): Task[] {
-    const tasks = this.get<Task[]>(STORAGE_KEYS.TASKS, []);
+    const rawTasks = this.get<Task[]>(STORAGE_KEYS.TASKS, []);
+    const tasks = rawTasks.filter(t => !t.id.includes('seed-task') && !t.id.includes('task-seed'));
+    if (tasks.length !== rawTasks.length) {
+      this.set(STORAGE_KEYS.TASKS, tasks);
+    }
+
     // Auto calculate "Overdue" status if due date has passed and task is still pending
     const todayStr = toLocalDateString();
     let changed = false;
@@ -350,7 +355,12 @@ class LocalDb {
 
   // --- HABITS CRUD ---
   public getHabits(): Habit[] {
-    return this.get<Habit[]>(STORAGE_KEYS.HABITS, []);
+    const rawHabits = this.get<Habit[]>(STORAGE_KEYS.HABITS, []);
+    const habits = rawHabits.filter(h => h.id !== 'habit-1' && h.id !== 'habit-2' && h.id !== 'habit-3' && !h.id.includes('habit-seed'));
+    if (habits.length !== rawHabits.length) {
+      this.set(STORAGE_KEYS.HABITS, habits);
+    }
+    return habits;
   }
 
   public createHabit(name: string, frequency: 'daily' | 'weekly'): Habit {
