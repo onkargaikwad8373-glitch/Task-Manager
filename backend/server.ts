@@ -605,10 +605,21 @@ async function startServer() {
     app.use(vite.middlewares);
   } else {
     const distPath = path.join(process.cwd(), 'dist');
-    app.use(express.static(distPath));
-    app.get('*', (req, res) => {
-      res.sendFile(path.join(distPath, 'index.html'));
-    });
+    const hasIndexHtml = fs.existsSync(path.join(distPath, 'index.html'));
+    
+    if (hasIndexHtml) {
+      app.use(express.static(distPath));
+      app.get('*', (req, res) => {
+        res.sendFile(path.join(distPath, 'index.html'));
+      });
+    } else {
+      app.get('*', (req, res) => {
+        res.json({
+          status: 'ok',
+          message: 'Task Manager API is running. Frontend is hosted separately.',
+        });
+      });
+    }
   }
 
   app.listen(PORT, '0.0.0.0', () => {
